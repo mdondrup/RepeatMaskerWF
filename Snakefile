@@ -27,22 +27,25 @@ rule index_genome:
     input:
         genome=config["genome_fasta"],
     output:
-        directory(f"{OUTDIR}/{SAMPLE}_RMdb"),
+        f"{OUTDIR}/{SAMPLE}_RMdb/genome_RMdb.nsq",
+        f"{OUTDIR}/{SAMPLE}_RMdb/genome_RMdb.nin",
+        f"{OUTDIR}/{SAMPLE}_RMdb/genome_RMdb.nhr",
+        f"{OUTDIR}/{SAMPLE}_RMdb/genome_RMdb.nnd",
     log:
-        f"{OUTDIR}/logs/{SAMPLE}.builddatabase.log",
+        f"logs/{SAMPLE}.builddatabase.log",
     threads: 1
     conda:
         "workflow/envs/repeatmodeler.yaml"
     shell:
         r"""
         mkdir -p $(dirname {log})
-        BuildDatabase -name {output} {input.genome} > {log} 2>&1
+        BuildDatabase -name {OUTDIR}/{SAMPLE}_RMdb/genome_RMdb {input.genome} > {log} 2>&1
         """
 
 
 rule repeatmodeler:
     input:
-        db=directory(f"{OUTDIR}/{SAMPLE}_RMdb"),
+        db=f"{OUTDIR}/{SAMPLE}_RMdb/genome_RMdb.nin",
     output:
         library=f"{OUTDIR}/{SAMPLE}-families.fa",
         run_dir=directory(f"{OUTDIR}/RM_{SAMPLE}_run"),
@@ -50,7 +53,7 @@ rule repeatmodeler:
     conda:
         "workflow/envs/repeatmodeler.yaml"
     log:
-        f"{OUTDIR}/logs/{SAMPLE}.repeatmodeler.log",
+        f"logs/{SAMPLE}.repeatmodeler.log",
     params:
         engine=RM_ENGINE,
         ltr_struct=RM_LTR_STRUCT,
@@ -82,7 +85,7 @@ rule repeatmasker:
     conda:
         "workflow/envs/repeatmasker.yaml"
     log:
-        f"{OUTDIR}/logs/{SAMPLE}.repeatmasker.log",
+        f"logs/{SAMPLE}.repeatmasker.log",
     params:
         engine=MASK_ENGINE,
         species=MASK_SPECIES,
