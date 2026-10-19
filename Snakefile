@@ -60,7 +60,7 @@ rule repeatmodeler:
         ltr_struct=RM_LTR_STRUCT,
     shell:
         r"""
-        RepeatModeler -database {db}/genome_RMdb \
+        RepeatModeler -database {input.db}/genome_RMdb \
             -engine {params.engine} \
             -threads {threads} \
             $([ "{params.ltr_struct}" = "True" ] && echo "-LTRStruct") \
