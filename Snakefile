@@ -27,6 +27,7 @@ rule index_genome:
     input:
         genome=config["genome_fasta"],
     output:
+        directory(f"{OUTDIR}/{SAMPLE}_RMdb"),
         f"{OUTDIR}/{SAMPLE}_RMdb/genome_RMdb.nsq",
         f"{OUTDIR}/{SAMPLE}_RMdb/genome_RMdb.nin",
         f"{OUTDIR}/{SAMPLE}_RMdb/genome_RMdb.nhr",
@@ -38,14 +39,14 @@ rule index_genome:
         "workflow/envs/repeatmodeler.yaml"
     shell:
         r"""
-        mkdir -p $(dirname {log})
+        mkdir -p $(dirname {output[0]})
         BuildDatabase -name {OUTDIR}/{SAMPLE}_RMdb/genome_RMdb {input.genome} > {log} 2>&1
         """
 
 
 rule repeatmodeler:
     input:
-        db=f"{OUTDIR}/{SAMPLE}_RMdb/genome_RMdb.nin",
+        db=f"{OUTDIR}/{SAMPLE}_RMdb/",
     output:
         library=f"{OUTDIR}/{SAMPLE}-families.fa",
         run_dir=directory(f"{OUTDIR}/RM_{SAMPLE}_run"),
@@ -59,8 +60,7 @@ rule repeatmodeler:
         ltr_struct=RM_LTR_STRUCT,
     shell:
         r"""
-        mkdir -p $(dirname {log})
-        RepeatModeler -database {input.db} \
+        RepeatModeler -database {db}/genome_RMdb \
             -engine {params.engine} \
             -threads {threads} \
             $([ "{params.ltr_struct}" = "True" ] && echo "-LTRStruct") \
