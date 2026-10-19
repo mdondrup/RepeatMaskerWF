@@ -45,8 +45,7 @@ rule repeatmodeler:
         db=directory(f"{OUTDIR}/{SAMPLE}_RMdb"),
     output:
         library=f"{OUTDIR}/{SAMPLE}-families.fa",
-        directory(f"{OUTDIR}/RM_{SAMPLE}_run"),
-    output:
+        run_dir=directory(f"{OUTDIR}/RM_{SAMPLE}_run"),
     threads: THREADS
     conda:
         "workflow/envs/repeatmodeler.yaml"
