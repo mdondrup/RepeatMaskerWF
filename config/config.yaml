@@ -1,11 +1,11 @@
 # Input genome assembly (FASTA)
-genome_fasta: "genomes/genome.fa"
+genome_fasta: "genomes/genome.fna"
 
 # Output directory
 outdir: "results"
 
 # Default number of threads per rule
-threads: 8
+threads: 120
 
 repeatmodeler:
   # Search engine: ncbi | abblast | rmblast
