@@ -1,0 +1,7 @@
+channels:
+  - conda-forge
+  - bioconda
+  - nodefaults
+dependencies:
+  - bioconda::repeatmodeler=1.0.4
+  - bioconda::rmblast=2.14.1

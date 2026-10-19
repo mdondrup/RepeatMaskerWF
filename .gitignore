@@ -1,0 +1,17 @@
+# Snakemake / conda
+.snakemake/
+*.snakemake_timestamp
+.conda/
+conda-meta/
+
+# Results and logs
+results/
+logs/
+
+# Large inputs
+genomes/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store

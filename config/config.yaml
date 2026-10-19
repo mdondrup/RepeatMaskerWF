@@ -1,0 +1,23 @@
+# Input genome assembly (FASTA)
+genome_fasta: "genomes/genome.fa"
+
+# Output directory
+outdir: "results"
+
+# Default number of threads per rule
+threads: 8
+
+repeatmodeler:
+  # Search engine: ncbi | abblast | rmblast
+  engine: "ncbi"
+  # Run the LTR structural discovery pipeline (requires LTR_Harvest/LTR_retriever)
+  ltr_struct: true
+
+repeatmasker:
+  # Search engine: ncbi | abblast | rmblast | hmmer
+  search_engine: "ncbi"
+  # Optional: additionally annotate against Dfam/Repbase for this species
+  # (requires RepeatMasker bundled with Dfam/Repbase libraries)
+  species: null
+  # Number of parallel search processes (-parallel)
+  parallel: 4
