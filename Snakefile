@@ -89,8 +89,9 @@ rule repeatmasker:
     shell:
         r"""
         cp {input.genome} {output.masked}
-        export FAMDB_DATA_DIR="$CONDA_PREFIX/share/RepeatMasker/Libraries"
+        FAMDB_DATA_DIR="$CONDA_PREFIX/share/RepeatMasker/Libraries"
         RepeatMasker -lib {input.library} \
+            -i $FAMDB_DATA_DIR \
             -engine {params.engine} \
             -gccalc \
             -s -noisy \
