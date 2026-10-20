@@ -4,5 +4,5 @@ channels:
   - nodefaults
 dependencies:
   - bioconda::repeatmasker=4.2.4
-  - bioconda::rmblast=2.14.1
+  - bioconda::rmblast
   - bioconda::trf
