@@ -91,11 +91,14 @@ rule repeatmasker:
         cp {input.genome} {output.masked}
         RepeatMasker -lib {input.library} \
             -engine {params.engine} \
-            -parallel {threads} \
+            -gccalc \
+            -s -noisy \
+            -gff \
+            -pa {threads} \
             -dir $(dirname {output.gff}) \
             $([ -n "{params.species}" ] && [ "{params.species}" != "None" ] && echo "-species {params.species}") \
             {output.masked} > {log} 2>&1
-        mv {output.masked}.out {output.out}
-        mv {output.masked}.out.gff {output.gff}
-        mv {output.masked}.tbl {output.tbl}
+        mv -vf {output.masked}.out {output.out}
+        mv -vf {output.masked}.out.gff {output.gff}
+        mv -vf {output.masked}.tbl {output.tbl}
         """
