@@ -65,17 +65,14 @@ rule repeatmodeler:
             -threads {threads} \
             $([ "{params.ltr_struct}" = "True" ] && echo "-LTRStruct") \
             > {log} 2>&1
-        # RepeatModeler writes its results to a new RM_* directory; move the
-        # consensus library into place and keep the run directory as output.
-        rm -f {output.library}
-        cp $(find {OUTDIR} -maxdepth 1 -type d -name 'RM_*' -newer {input.db} | sort | tail -n1)/consensi.fa.classified {output.library}
+        # RepeatModeler writes its results to the database directory
         """
 
 
 rule repeatmasker:
     input:
         genome=config["genome_fasta"],
-        library=f"{OUTDIR}/{SAMPLE}-families.fa",
+        library=f"{OUTDIR}/{SAMPLE}_RMdb/{SAMPLE}_RMdb-families.fa",
     output:
         gff=f"{OUTDIR}/{SAMPLE}.repeatmasker.gff",
         out=f"{OUTDIR}/{SAMPLE}.repeatmasker.out",
@@ -91,7 +88,6 @@ rule repeatmasker:
         species=MASK_SPECIES,
     shell:
         r"""
-        mkdir -p $(dirname {log})
         cp {input.genome} {output.masked}
         RepeatMasker -lib {input.library} \
             -engine {params.engine} \
