@@ -48,8 +48,8 @@ rule repeatmodeler:
     input:
         db=f"{OUTDIR}/{SAMPLE}_RMdb/",
     output:
-        library=f"{OUTDIR}/{SAMPLE}-families.fa",
-        run_dir=directory(f"{OUTDIR}/RM_{SAMPLE}_run"),
+        library=f"{OUTDIR}/{SAMPLE}_RMdb/RMdb-families.fa",
+        
     threads: THREADS
     conda:
         "workflow/envs/repeatmodeler.yaml"
@@ -72,7 +72,7 @@ rule repeatmodeler:
 rule repeatmasker:
     input:
         genome=config["genome_fasta"],
-        library=f"{OUTDIR}/{SAMPLE}_RMdb/{SAMPLE}_RMdb-families.fa",
+        library=f"{OUTDIR}/{SAMPLE}_RMdb/RMdb-families.fa",
     output:
         gff=f"{OUTDIR}/{SAMPLE}.repeatmasker.gff",
         out=f"{OUTDIR}/{SAMPLE}.repeatmasker.out",
