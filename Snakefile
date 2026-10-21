@@ -27,7 +27,6 @@ rule index_genome:
     input:
         genome=config["genome_fasta"],
     output:
-        directory(f"{OUTDIR}/{SAMPLE}_RMdb"),
         f"{OUTDIR}/{SAMPLE}_RMdb/genome_RMdb.nsq",
         f"{OUTDIR}/{SAMPLE}_RMdb/genome_RMdb.nin",
         f"{OUTDIR}/{SAMPLE}_RMdb/genome_RMdb.nhr",
@@ -46,7 +45,7 @@ rule index_genome:
 
 rule repeatmodeler:
     input:
-        db=f"{OUTDIR}/{SAMPLE}_RMdb/",
+        db=f"{OUTDIR}/{SAMPLE}_RMdb/genome_RMdb.nsq",
     output:
         library=f"{OUTDIR}/{SAMPLE}_RMdb/RMdb-families.fa",
         
@@ -60,7 +59,7 @@ rule repeatmodeler:
         ltr_struct=RM_LTR_STRUCT,
     shell:
         r"""
-        RepeatModeler -database {input.db}/genome_RMdb \
+        RepeatModeler -database {input.db} \
             -engine {params.engine} \
             -threads {threads} \
             $([ "{params.ltr_struct}" = "True" ] && echo "-LTRStruct") \
